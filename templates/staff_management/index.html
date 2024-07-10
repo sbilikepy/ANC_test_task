@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Employee tree project</h1>
+  <p>GitHub repository: <a href="https://github.com/sbilikepy/ANC_test_task">Test
+    project for ANC</a></p>
+  <br>
+  
+  <div>
+    <h2>Current State of the Database:</h2>
+    Employees in DB total: <strong>{{ db_size }}</strong>
+    <ul>
+      <li>Level 7: <strong>{{ lvl_7 }}</strong></li>
+      <li>Level 6: <strong>{{ lvl_7 }}</strong></li>
+      <li>Level 5: <strong>{{ lvl_6 }}</strong></li>
+      <li>Level 4: <strong>{{ lvl_5 }}</strong></li>
+      <li>Level 3: <strong>{{ lvl_4 }}</strong></li>
+      <li>Level 2: <strong>{{ lvl_3 }}</strong></li>
+      <li>Level 1: <strong>{{ lvl_2 }}</strong></li>
+      <li>Level 1: <strong>{{ lvl_1 }}</strong></li>
+    
+    </ul>
+  
+  </div>
+{% endblock %}
