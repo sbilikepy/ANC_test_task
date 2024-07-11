@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE",
                       "EmployeeManagementDjangoProject.settings")
 django.setup()
 
-from staff_management.models import Employee, Position
+from staff_management.models import Employee
 
 
 def seed_users(amount):
@@ -35,6 +35,7 @@ def seed_users(amount):
         user.set_password(f'seed_password{pk}')
         user.save()
     print(f"{amount} users has been created.")
+
 
 def unique_email(seeder):
     email = seeder.faker.email()
