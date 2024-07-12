@@ -49,7 +49,7 @@ def assign_positions():
             employee_without_position.save()
             lvl_3_count += 1
 
-        elif lvl_2_count < 5000:
+        elif lvl_2_count < 2000:
             employee_without_position.position = Position.objects.get(pk=2)
             employee_without_position.save()
             lvl_2_count += 1
