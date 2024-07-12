@@ -1,7 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from .models import *
+from django.http import JsonResponse, HttpRequest, HttpResponse
+
 from django.shortcuts import render
+from django.views import View
+from .models import Employee, Position
 
 
 def index(request):
