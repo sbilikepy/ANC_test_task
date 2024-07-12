@@ -7,25 +7,28 @@ from django.db import models
 
 class Employee(AbstractUser):
     full_name = models.CharField(max_length=128, null=True)
-
     position = models.ForeignKey("Position",
                                  on_delete=models.CASCADE,
                                  null=True,  # TODO: set to False after db fill
+                                 blank=True,
                                  related_name="employees")
 
-    hired = models.DateField()
-    email = models.EmailField(unique=True)
+    hired = models.DateField(null=True, blank=True, )
+    email = models.EmailField(unique=True, blank=True, )
 
     supervisor = models.ForeignKey("self",
                                    on_delete=models.SET_NULL,
                                    null=True,
                                    # TODO: set to False after db fill
                                    related_name="subordinates")
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.full_name}. Position: {self.position}"
+        return self.full_name
 
     def clean(self):
+        self.full_name = f"{self.first_name} {self.last_name}"
         if not self.full_name:
             self.full_name = f"{self.first_name} {self.last_name}"
 
@@ -47,15 +50,13 @@ class Employee(AbstractUser):
             return False
 
     class Meta:
-        pass
+        unique_together = ('full_name', 'email')
 
 
 class Position(models.Model):
     LVL_1_POSITION_CHOICES = [
-        ('position_1', 'Position 1'),
-        ('position_2', 'Position 2'),
-        ('position_3', 'Position 3'),
-        ('position_4', 'Position 4'),
+        ('position_1', 'Start position'),
+
     ]
 
     LVL_2_POSITION_CHOICES = [
@@ -96,7 +97,8 @@ class Position(models.Model):
 
     name = models.CharField(
         max_length=128,
-        choices=ALL_POSITION_CHOICES
+        choices=ALL_POSITION_CHOICES,
+        unique=True
     )
     hierarchy_level = models.IntegerField(
         null=True,

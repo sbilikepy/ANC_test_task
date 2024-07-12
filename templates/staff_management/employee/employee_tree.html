@@ -1,24 +1,94 @@
 {% extends "base.html" %}
 {% load static %}
+{% load employee_filters %}
 {% block content %}
 
-Halo
+  <div class="container-fluid custom-container">
+    <div class="flex-row">
+      {#7#}
+      <div class="level-container" id="level-7">
+        {% for employee in employees|get_by_level:7 %}
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ employee.full_name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ employee.position.name }}</h6>
+              <p class="card-text">
+                Level: {{ employee.position.hierarchy_level }}</p>
+              <a href="#" class="card-link" data-id="{{ employee.id }}"
+                 onclick="loadSubordinates({{ employee.id }}, 7)">Load
+                subordinates</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
 
+      
+      {#6#}
+      <div class="level-container" id="level-6">
+      </div>
+      
+      {#5#}
+      <div class="level-container" id="level-5">
+      </div>
+      {#4#}
+      <div class="level-container" id="level-4">
+      </div>
+      {#5#}
+      <div class="level-container" id="level-3">
+      </div>
+      {#6#}
+      <div class="level-container" id="level-2">
+      </div>
+      {#7#}
+      <div class="level-container" id="level-1">
+      </div>
+    </div>
+  </div>
+  
+  
 
-                                               |
-                                              -x-
-                                               |
-              v .   ._, |_  .,
-           `-._\/  .  \ /    |/_
-               \\  _\, y | \//
-         _\_.___\\, \\/ -.\||
-           `7-,--.`._||  / / ,
-           /'     `-. `./ / |/_.'
-                     |    |//
-                     |_    /
-                     |-   |
-                     |   =|
-                     |    |
---------------------/ ,  . \--------._
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+      function loadSubordinates(employeeId, currentLevel) {
+          console.log('Loading subordinates for employee ID:', employeeId);
+
+          $.ajax({
+              url: '{% url "staff_management:load-subordinates" %}',
+              method: 'GET',
+              data: {'employee_id': employeeId},
+              success: function (data) {
+                  console.log('Received data:', data);
+
+                  var nextLevel = currentLevel - 1;
+                  var subordinatesHtml = '';
+
+                  data.subordinates.forEach(function (employee) {
+                      subordinatesHtml += '<div class="card">' +
+                          '<div class="card-body">' +
+                          '<h5 class="card-title">' + employee.full_name + '</h5>' +
+                          '<h6 class="card-subtitle mb-2 text-muted">' + employee['position__name'] + '</h6>' +
+                          '<p class="card-text">Level: ' + employee.position + '</p>';
+
+                      if (nextLevel > 1) {
+                          subordinatesHtml += '<a href="#" class="card-link" onclick="loadSubordinates(' + employee.id + ', ' + nextLevel + ')">Load subordinates</a>';
+                      }
+
+                      subordinatesHtml += '</div>' +
+                          '</div>';
+                  });
+
+                  $('#level-' + nextLevel).html(subordinatesHtml);
+              },
+              error: function (xhr, status, error) {
+                  console.error('Error loading subordinates:', error);
+              }
+          });
+      }
+
+      $(document).ready(function () {
+          var firstEmployeeId = $('#employee-list .list-group-item').first().data('id');
+          loadSubordinates(firstEmployeeId, 7);
+      });
+  </script>
 
 {% endblock %}

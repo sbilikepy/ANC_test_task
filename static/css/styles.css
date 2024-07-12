@@ -1,0 +1,18 @@
+.custom-container {
+    overflow-x: auto;
+}
+
+.flex-row {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.level-container {
+    padding: 10px;
+    margin-bottom: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    flex: 0 0 14.28%; /* 100% / 7 */
+    min-width: 14.28%;
+}
