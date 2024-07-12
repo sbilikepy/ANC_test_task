@@ -2,24 +2,24 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-
+  
   {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
-
+  
   <div style="text-align: center;">
     <h1>Sign In</h1>
-
+    
     {% if next %}
       <p>Please sign in to continue.</p>
     {% endif %}
   </div>
-
+  
   <form method="post" action="{% url 'login' %}"
         style="display: flex; flex-direction: column; max-width: 350px; margin: auto;">
     {% csrf_token %}
     {{ form|crispy }}
-
+    
     <input type="submit" value="Login" class="btn btn-success"
            style="border-radius: 10px; margin-bottom: 10px;"/>
     <input type="hidden" name="next" value="{{ next }}"/>
