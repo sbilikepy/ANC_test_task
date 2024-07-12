@@ -71,4 +71,4 @@ class EmployeeListView(LoginRequiredMixin,
     model = Employee
     context_object_name = "employee_list"
     template_name = "staff_management/employee/employee_list.html"
-
+    paginate_by = 10
