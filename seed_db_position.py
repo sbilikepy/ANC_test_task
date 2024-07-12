@@ -20,21 +20,44 @@ def assign_positions():
                 candidate.supervisor = Employee.objects.filter(
                     position__hierarchy_level__exact=position_id + 1).first()
             candidate.save()
-    positions_counter = 0
+
+    lvl_6_count = 0
+    lvl_5_count = 0
+    lvl_4_count = 0
+    lvl_3_count = 0
+    lvl_2_count = 0
+    lvl_1_count = 0
+
     for employee_without_position in Employee.objects.filter(position=None):
-        if positions_counter < 200:
+        if lvl_6_count < 10:
+            employee_without_position.position = Position.objects.get(pk=6)
+            employee_without_position.save()
+            lvl_6_count += 1
+
+        if lvl_5_count < 50:
+            employee_without_position.position = Position.objects.get(pk=5)
+            employee_without_position.save()
+            lvl_5_count += 1
+
+        if lvl_4_count < 250:
+            employee_without_position.position = Position.objects.get(pk=4)
+            employee_without_position.save()
+            lvl_4_count += 1
+
+        if lvl_3_count < 500:
             employee_without_position.position = Position.objects.get(pk=3)
             employee_without_position.save()
-            positions_counter += 1
+            lvl_3_count += 1
 
-        elif positions_counter < 300:
+        elif lvl_2_count < 5000:
             employee_without_position.position = Position.objects.get(pk=2)
             employee_without_position.save()
-            positions_counter += 1
+            lvl_2_count += 1
 
         else:
             employee_without_position.position = Position.objects.get(pk=1)
             employee_without_position.save()
+            lvl_1_count += 1
 
     # for i in Employee.objects.all():
     #     i.position_id = None
