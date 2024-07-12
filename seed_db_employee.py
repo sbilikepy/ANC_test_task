@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE",
                       "EmployeeManagementDjangoProject.settings")
 django.setup()
 
-from staff_management.models import Employee
+from staff_management.models import Employee, Position
 
 
 def seed_users(amount):
@@ -52,4 +52,4 @@ def unique_username(seeder):
 
 
 if __name__ == "__main__":
-    seed_users(1000)
+    seed_users(50_000)
