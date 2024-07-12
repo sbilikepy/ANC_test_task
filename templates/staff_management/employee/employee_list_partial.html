@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th><a href="#" class="sort-link" data-sort="full_name">Name</a></th>
+            <th><a href="#" class="sort-link" data-sort="position__name">Position</a></th>
+            <th><a href="#" class="sort-link" data-sort="email">Email</a></th>
+            <th><a href="#" class="sort-link" data-sort="hired">Hired</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employee_list %}
+        <tr>
+            <td>{{ employee.full_name }}</td>
+            <td>{{ employee.position.name }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.hired }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
