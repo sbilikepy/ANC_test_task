@@ -1,0 +1,59 @@
+[
+  {
+    "model": "staff_management.position",
+    "pk": 1,
+    "fields": {
+      "name": "position_1",
+      "hierarchy_level": 1
+    }
+  },
+
+  {
+    "model": "staff_management.position",
+    "pk": 2,
+    "fields": {
+      "name": "manager",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "staff_management.position",
+    "pk": 3,
+    "fields": {
+      "name": "department_head",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "staff_management.position",
+    "pk": 4,
+    "fields": {
+      "name": "coo",
+      "hierarchy_level": 4
+    }
+  },
+  {
+    "model": "staff_management.position",
+    "pk": 5,
+    "fields": {
+      "name": "cfo",
+      "hierarchy_level": 5
+    }
+  },
+  {
+    "model": "staff_management.position",
+    "pk": 6,
+    "fields": {
+      "name": "ceo",
+      "hierarchy_level": 6
+    }
+  },
+  {
+    "model": "staff_management.position",
+    "pk": 7,
+    "fields": {
+      "name": "chairman",
+      "hierarchy_level": 7
+    }
+  }
+]
