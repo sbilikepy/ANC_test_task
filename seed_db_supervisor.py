@@ -25,6 +25,8 @@ def assign_supervisors():
                   f" {supervisor.full_name} (lvl "
                   f"{supervisor.position.hierarchy_level})")
 
+    print("Relations created")
+
 
 if __name__ == "__main__":
     assign_supervisors()
