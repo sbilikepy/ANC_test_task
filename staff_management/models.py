@@ -96,7 +96,8 @@ class Position(models.Model):
 
     name = models.CharField(
         max_length=128,
-        choices=ALL_POSITION_CHOICES
+        choices=ALL_POSITION_CHOICES,
+        unique=True
     )
     hierarchy_level = models.IntegerField(
         null=True,
