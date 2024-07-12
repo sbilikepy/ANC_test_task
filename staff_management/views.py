@@ -39,14 +39,35 @@ def index(request):
     )
 
 
-class EmployeeTreeView(generic.ListView):  # TODO: LoginRequiredMixin later
-    model = Employee
-    context_object_name = "employees_tree"
-    template_name = "staff_management/employee/employee_tree.html"
+class EmployeeTreeView(View):
+    def get(self, request):
+        employees = Employee.objects.all()
+        levels = range(1, 8)  # Levels from 1 to 7
+        return render(request,
+                      'staff_management/employee/employee_tree.html',
+                      {'employees': employees, 'levels': levels})
 
 
+def load_subordinates(request):
+    employee_id = request.GET.get('employee_id')
 
-class EmployeeListView(LoginRequiredMixin, generic.ListView): # TODO: LoginRequiredMixin later
+    try:
+        employee = Employee.objects.get(id=employee_id)
+    except Employee.DoesNotExist:
+        return JsonResponse({'error': 'Employee not found'}, status=404)
+
+    subordinates = Employee.objects.filter(
+        supervisor=employee.id
+    ).values('id', 'full_name', 'position', 'position__name')
+
+    print(list(
+        subordinates)) #TODO: remove console log
+
+    return JsonResponse({'subordinates': list(subordinates)})
+
+
+class EmployeeListView(LoginRequiredMixin,
+                       generic.ListView):
     model = Employee
     context_object_name = "employee_list"
     template_name = "staff_management/employee/employee_list.html"
