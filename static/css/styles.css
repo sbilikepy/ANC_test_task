@@ -1,3 +1,11 @@
+.container {
+    max-width: 1300px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .custom-container {
     overflow-x: auto;
 }
@@ -11,8 +19,46 @@
 .level-container {
     padding: 10px;
     margin-bottom: 10px;
-    max-height: 500px;
+    max-height: 860px;
     overflow-y: auto;
     flex: 0 0 14.28%; /* 100% / 7 */
     min-width: 14.28%;
 }
+
+.card.active {
+    border-width: 2px;
+    border-style: solid;
+    border-color: blue;
+}
+
+
+.table th {
+    text-align: center;
+}
+
+.table th,
+.table td {
+    width: 25%;
+}
+
+.nav-tabs {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.nav-item {
+    margin-right: 5px;
+}
+
+.nav-link {
+    color: #007bff;
+}
+
+.nav-link:hover {
+    color: #0056b3;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
