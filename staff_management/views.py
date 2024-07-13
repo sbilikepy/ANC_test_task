@@ -69,8 +69,7 @@ def load_subordinates(request):
     return JsonResponse({'subordinates': list(subordinates)})
 
 
-class EmployeeListView(LoginRequiredMixin,
-                       generic.ListView):
+class EmployeeListView(LoginRequiredMixin, generic.ListView):
     model = Employee
     context_object_name = "employee_list"
     template_name = "staff_management/employee/employee_list.html"
