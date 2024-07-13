@@ -2,13 +2,13 @@
 {% load crispy_forms_filters %}
 {% load static %}
 {% block content %}
-
+  
   <form action="" method="get" class="form-inline mb-3">
     {{ search_form|crispy }}
     <input class="btn btn-secondary" type="submit" value="🔎">
   </form>
-
-  <table class="table table-striped">
+  
+  <table class="table table-bordered">
     <thead>
     <tr>
       <th scope="col"><a
@@ -36,6 +36,5 @@
     {% endfor %}
     </tbody>
   </table>
-
 
 {% endblock %}
