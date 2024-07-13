@@ -1,9 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.views import generic
 from django.http import JsonResponse, HttpRequest, HttpResponse
 
 from django.shortcuts import render
 from django.views import View
+
+from .forms import EmployeeSearchForm
 from .models import Employee, Position
 
 
@@ -61,7 +64,7 @@ def load_subordinates(request):
     ).values('id', 'full_name', 'position', 'position__name')
 
     print(list(
-        subordinates)) #TODO: remove console log
+        subordinates))  # TODO: remove console log
 
     return JsonResponse({'subordinates': list(subordinates)})
 
