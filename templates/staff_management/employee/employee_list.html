@@ -11,10 +11,18 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col"><a
+          href="?sort=full_name&direction={% if request.GET.sort == 'full_name' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Full
+        Name</a></th>
+      <th scope="col"><a
+          href="?sort=position__hierarchy_level&direction={% if request.GET.sort == 'position__hierarchy_level' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Position</a>
+      </th>
+      <th scope="col"><a
+          href="?sort=hired&direction={% if request.GET.sort == 'hired' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Hired</a>
+      </th>
+      <th scope="col"><a
+          href="?sort=email&direction={% if request.GET.sort == 'email' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Email</a>
+      </th>
     </tr>
   </thead>
   <tbody>
