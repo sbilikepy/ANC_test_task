@@ -1,36 +1,35 @@
 <ul class="nav nav-tabs justify-content-around">
-
+  
   <li class="nav-item">
     <a class="nav-link" href="{% url 'staff_management:index' %}">Home</a>
   </li>
-
-
+  
+  
   <li class="nav-item">
     <a class="nav-link" href="{% url 'staff_management:employee-tree' %}">Tree
       visualisation</a>
   </li>
-
+  
   <li class="nav-item">
     <a class="nav-link"
        href="{% url 'staff_management:employee-list' %}">Table</a>
   </li>
-
-
-
+  
+  
+  
   {% if user.is_authenticated %}
-
+    
     <li class="nav-item justify-content-end">
       <form method="post" action="{% url 'logout' %}?next={{ request.path }}"
             style="display: inline;">
         {% csrf_token %}
-        <button type="submit" class="nav-link btn btn-link logout"
-                style="padding: 0;">Logout
+        <button type="submit" class="nav-link btn btn-link logout">Logout
         </button>
         <input type="hidden" name="next" value="{{ request.path }}">
       </form>
     </li>
-
-
+  
+  
   {% else %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
