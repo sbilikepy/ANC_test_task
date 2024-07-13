@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views import generic
-from django.http import JsonResponse, HttpRequest, HttpResponse
+from django.http import JsonResponse
 
 from django.shortcuts import render
 from django.views import View
 
 from .forms import EmployeeSearchForm
-from .models import Employee, Position
+from .models import Employee
 
 
 def index(request):
