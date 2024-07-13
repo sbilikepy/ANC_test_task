@@ -45,7 +45,7 @@ def index(request):
 class EmployeeTreeView(View):
     def get(self, request):
         employees = Employee.objects.all()
-        levels = range(1, 8)  # Levels from 1 to 7
+        levels = range(1, 8)
         return render(request,
                       'staff_management/employee/employee_tree.html',
                       {'employees': employees, 'levels': levels})
@@ -62,9 +62,6 @@ def load_subordinates(request):
     subordinates = Employee.objects.filter(
         supervisor=employee.id
     ).values('id', 'full_name', 'position', 'position__name')
-
-    print(list(
-        subordinates))  # TODO: remove console log
 
     return JsonResponse({'subordinates': list(subordinates)})
 
