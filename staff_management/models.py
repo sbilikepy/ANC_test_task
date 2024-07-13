@@ -28,7 +28,6 @@ class Employee(AbstractUser):
         return self.full_name
 
     def clean(self):
-        self.full_name = f"{self.first_name} {self.last_name}"
         if not self.full_name:
             self.full_name = f"{self.first_name} {self.last_name}"
 

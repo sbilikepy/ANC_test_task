@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     "crispy_forms",
     'django_seed',
-    'django_static_jquery',
     "staff_management"
 ]
 
