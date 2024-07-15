@@ -36,4 +36,3 @@ urlpatterns = [
     ),
     path("employees/crud-info/", crud_info, name="employee-crud-info"),
 ]
-
