@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Employee
 
 
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         template_name="staff_management/index.html",
