@@ -69,6 +69,75 @@ class Employee(AbstractUser):
         if self.supervisor and self.supervisor == self:
             raise ValidationError("Employee cannot be their own supervisor")
 
+        if not self.hired:
+            self.hired = datetime.now()
+
+    def save(self, *args, **kwargs) -> None:
+        if self.pk:
+            try:
+                old_instance = Employee.objects.get(pk=self.pk)
+            except Employee.DoesNotExist:
+                pass
+            else:
+                if (
+                        old_instance.position.hierarchy_level
+                        != self.position.hierarchy_level
+                ):
+                    print(
+                        f"Hierarchy level changed for {self.full_name}. "
+                        f"Reassigning subordinates."
+                    )
+                    self.reassign_subordinates("update")
+                    new_supervisor = (
+                        Employee.objects.filter(
+                            position__hierarchy_level=self.position.hierarchy_level + 1
+                        )
+                        .annotate(num_subordinates=Count("subordinates"))
+                        .order_by("num_subordinates")
+                        .first()
+                    )
+                    self.supervisor = new_supervisor
+
+        self.username = self.email
+        super(Employee, self).save(*args, **kwargs)
+        print(f"Employee {self.full_name} saved.")
+
+    def delete(self, *args, **kwargs):
+        if self.subordinates.exists():
+            print(
+                f"Employee {self.full_name} has subordinates."
+                f" Reassigning them.")
+            self.reassign_subordinates("delete")
+        super(Employee, self).delete(*args, **kwargs)
+
+    def reassign_subordinates(self, event_type: str) -> None:
+
+        if event_type == "update":
+            next_hierarchy_level = self.position.hierarchy_level
+        else:
+            next_hierarchy_level = self.position.hierarchy_level + 1
+
+        new_supervisor = (
+            Employee.objects.filter(
+                position__hierarchy_level=next_hierarchy_level - 1)
+            .annotate(num_subordinates=Count("subordinates"))
+            .order_by("num_subordinates")
+            .first()
+        )
+
+        if new_supervisor:
+            self.subordinates.update(supervisor=new_supervisor)
+            print(
+                f"Subordinates of {self.full_name} "
+                f"reassigned to new supervisor: {new_supervisor.full_name}"
+            )
+        else:
+            self.subordinates.update(supervisor=None)
+            print(
+                f"No suitable supervisor found for {self.full_name}."
+                f" Subordinates set to None."
+            )
+
     @staticmethod
     def email_validator(email):
         from django.core.validators import validate_email
