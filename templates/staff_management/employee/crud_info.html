@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Management FAQ</h2>
+    <p>This section provides information on how to manage employee records. <strong>Only authenticated</strong> users can create, read, update, and delete employee records.</p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h5><strong>C</strong>reate an Employee</h5>
+            <p>To create a new employee, navigate to the <a href="{% url 'staff_management:employee-create' %}">this</a> page.</p>
+        </li>
+        <li class="list-group-item">
+            <h5><strong>R</strong>ead Employee Information</h5>
+            <p>Authenticated users can view employee details by accessing the links in the hierarchy tree or the employee list table.</p>
+        </li>
+        <li class="list-group-item">
+            <h5><strong>U</strong>pdate Employee Information</h5>
+            <p>To update an employee's information, go to the employee's profile page.</p>
+        </li>
+        <li class="list-group-item">
+            <h5><strong>D</strong>elete an Employee</h5>
+            <p>To delete an employee, visit the employee's profile page and use the delete option.</p>
+        </li>
+    </ul>
+</div>
+{% endblock %}
