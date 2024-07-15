@@ -24,7 +24,7 @@
           </div>
         {% endfor %}
       </div>
-
+      
       <div class="level-container" id="level-6"></div>
       <div class="level-container" id="level-5"></div>
       <div class="level-container" id="level-4"></div>
@@ -33,12 +33,12 @@
       <div class="level-container" id="level-1"></div>
     </div>
   </div>
-
+  
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
       function loadSubordinates(employeeId, currentLevel) {
           console.log('Loading subordinates for employee ID:', employeeId);
-          
+
           for (var level = currentLevel - 1; level >= 1; level--) {
               $('#level-' + level).empty();
           }
@@ -59,13 +59,9 @@
                           '<h5 class="card-title">' + employee.full_name + '</h5>' +
                           '<h6 class="card-subtitle mb-2 text-muted">' + employee['position__name'] + '</h6>' +
                           '<p class="card-text">Level: ' + employee.position + '</p>' +
-                          '<p class="card-text">📋 <a href="/employees/' + employee.id + '/" target="_blank">Get info</a></p>'
-
-                      ;
-
+                          '<p class="card-text">📋 <a href="/employees/' + employee.id + '/" target="_blank">Get info</a></p>';
 
                       if (nextLevel > 1) {
-
                           subordinatesHtml += '<button class="btn btn-primary" data-id="' + employee.id + '" onclick="loadSubordinates(' + employee.id + ', ' + nextLevel + ')">Load subordinates</button>';
                       }
 
