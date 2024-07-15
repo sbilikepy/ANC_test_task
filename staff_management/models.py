@@ -52,7 +52,7 @@ class Employee(AbstractUser):
     )
 
     def __str__(self):
-        return self.full_name
+        return self.full_name if self.full_name else "Unnamed Employee"
 
     def clean(self):
         if not self.full_name:
