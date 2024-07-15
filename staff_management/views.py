@@ -41,13 +41,15 @@ def index(request: HttpRequest) -> HttpResponse:
     )
 
 
-class EmployeeTreeView(View):
-    def get(self, request):
+class EmployeeTreeView(generic.View):
+    def get(self, request: HttpRequest) -> HttpResponse:
         employees = Employee.objects.all()
         levels = range(1, 8)
-        return render(request,
-                      'staff_management/employee/employee_tree.html',
-                      {'employees': employees, 'levels': levels})
+        return render(
+            request,
+            "staff_management/employee/employee_tree.html",
+            {"employees": employees, "levels": levels},
+        )
 
 
 def load_subordinates(request):
