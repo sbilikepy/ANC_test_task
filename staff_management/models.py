@@ -194,17 +194,13 @@ class Position(models.Model):
 
     ALL_POSITION_CHOICES = sum(POSITION_CHOICES.values(), [])
 
-    name = models.CharField(
-        max_length=128,
-        choices=ALL_POSITION_CHOICES,
-        unique=True
-    )
+    name = models.CharField(max_length=128, choices=ALL_POSITION_CHOICES,
+                            unique=True)
     hierarchy_level = models.IntegerField(
-        null=True,
-        validators=[MinValueValidator(1), MaxValueValidator(7)]
+        null=True, validators=[MinValueValidator(1), MaxValueValidator(7)]
     )
 
-    def clean(self):
+    def clean(self) -> None:
         if self.name not in dict(self.POSITION_CHOICES[self.hierarchy_level]):
             raise ValidationError(
                 f"Invalid position name for level {self.hierarchy_level}."
