@@ -11,22 +11,45 @@ from django.urls import reverse
 
 class Employee(AbstractUser):
     full_name = models.CharField(max_length=128, null=True)
-    position = models.ForeignKey("Position",
-                                 on_delete=models.CASCADE,
-                                 null=True,  # TODO: set to False after db fill
-                                 blank=True,
-                                 related_name="employees")
+    position = models.ForeignKey(
+        "Position",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="employees",
+    )
 
-    hired = models.DateField(null=True, blank=True, )
-    email = models.EmailField(unique=True, blank=True, )
+    hired = models.DateField(
+        null=True,
+        blank=True,
+    )
+    email = models.EmailField(unique=True)
 
-    supervisor = models.ForeignKey("self",
-                                   on_delete=models.SET_NULL,
-                                   null=True,
-                                   # TODO: set to False after db fill
-                                   related_name="subordinates")
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    supervisor = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="subordinates",
+    )
+    is_staff = models.BooleanField(
+        default=False
+    )
+    is_superuser = models.BooleanField(
+        default=False
+    )
+    username = models.CharField(
+        max_length=128, unique=True, blank=True,
+        null=True
+    )
+    first_name = models.CharField(
+        max_length=128, unique=False, blank=True,
+        null=True
+    )
+    last_name = models.CharField(
+        max_length=128, unique=False, blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.full_name
