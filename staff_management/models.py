@@ -139,7 +139,7 @@ class Employee(AbstractUser):
             )
 
     @staticmethod
-    def email_validator(email):
+    def email_validator(email: str) -> bool:
         from django.core.validators import validate_email
         from django.core.exceptions import ValidationError
 
@@ -150,7 +150,7 @@ class Employee(AbstractUser):
             return False
 
     class Meta:
-        unique_together = ('full_name', 'email')
+        unique_together = ("full_name", "email")
 
 
 class Position(models.Model):
