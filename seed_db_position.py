@@ -1,68 +1,39 @@
 import os
 
 import django
+from django.db import transaction
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE",
-                      "EmployeeManagementDjangoProject.settings")
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE", "EmployeeManagementDjangoProject.settings"
+)
 django.setup()
 
 from staff_management.models import Employee, Position
 
 
-def assign_positions():
-    for position_id in range(4, 8)[::-1]:
-        if len(Employee.objects.filter(
-                position__hierarchy_level=position_id)) == 0:
-            candidate = Employee.objects.filter(position=None).first()
-            new_position = Position.objects.get(pk=position_id)
-            candidate.position = new_position
-            if position_id != 7:
-                candidate.supervisor = Employee.objects.filter(
-                    position__hierarchy_level__exact=position_id + 1).first()
-            candidate.save()
+@transaction.atomic
+def assign_positions() -> None:
+    position_counts = {7: 1,
+                       6: 10,
+                       5: 50,
+                       4: 250,
+                       3: 1250,
+                       2: 6250,
+                       1: None}
 
-    lvl_6_count = 0
-    lvl_5_count = 0
-    lvl_4_count = 0
-    lvl_3_count = 0
-    lvl_2_count = 0
-    lvl_1_count = 0
+    employees_without_position = Employee.objects.filter(
+        position=None).order_by("id")
 
-    for employee_without_position in Employee.objects.filter(position=None):
-        if lvl_6_count < 10:
-            employee_without_position.position = Position.objects.get(pk=6)
-            employee_without_position.save()
-            lvl_6_count += 1
+    for employee in employees_without_position:
+        for position, count in position_counts.items():
+            if count is None or count > 0:
+                employee.position = Position.objects.get(pk=position)
+                employee.save()
+                if count is not None:
+                    position_counts[position] -= 1
+                break
 
-        if lvl_5_count < 50:
-            employee_without_position.position = Position.objects.get(pk=5)
-            employee_without_position.save()
-            lvl_5_count += 1
-
-        if lvl_4_count < 250:
-            employee_without_position.position = Position.objects.get(pk=4)
-            employee_without_position.save()
-            lvl_4_count += 1
-
-        if lvl_3_count < 500:
-            employee_without_position.position = Position.objects.get(pk=3)
-            employee_without_position.save()
-            lvl_3_count += 1
-
-        elif lvl_2_count < 2000:
-            employee_without_position.position = Position.objects.get(pk=2)
-            employee_without_position.save()
-            lvl_2_count += 1
-
-        else:
-            employee_without_position.position = Position.objects.get(pk=1)
-            employee_without_position.save()
-            lvl_1_count += 1
-
-    # for i in Employee.objects.all():
-    #     i.position_id = None
-    #     i.save()
-    print("Positions sorted")
+    print("Positions assigned")
 
 
 if __name__ == "__main__":
