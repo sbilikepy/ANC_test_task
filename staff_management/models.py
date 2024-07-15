@@ -155,32 +155,31 @@ class Employee(AbstractUser):
 
 class Position(models.Model):
     LVL_1_POSITION_CHOICES = [
-        ('position_1', 'Start position'),
-
+        ("position_1", "Start position"),
     ]
 
     LVL_2_POSITION_CHOICES = [
-        ('manager', 'Manager'),
+        ("manager", "Manager"),
     ]
 
     LVL_3_POSITION_CHOICES = [
-        ('department_head', 'Department Head'),
+        ("department_head", "Department Head"),
     ]
 
     LVL_4_POSITION_CHOICES = [
-        ('coo', 'Chief Operating Officer (COO)'),
+        ("coo", "Chief Operating Officer (COO)"),
     ]
 
     LVL_5_POSITION_CHOICES = [
-        ('cfo', 'Chief Financial Officer (CFO)'),
+        ("cfo", "Chief Financial Officer (CFO)"),
     ]
 
     LVL_6_POSITION_CHOICES = [
-        ('ceo', 'Chief Executive Officer (CEO)'),
+        ("ceo", "Chief Executive Officer (CEO)"),
     ]
 
     LVL_7_POSITION_CHOICES = [
-        ('chairman', 'Chairman'),
+        ("chairman", "Chairman"),
     ]
 
     POSITION_CHOICES = {
@@ -215,4 +214,4 @@ class Position(models.Model):
         return self.name
 
     class Meta:
-        unique_together = ('name', 'hierarchy_level')
+        unique_together = ("name", "hierarchy_level")
