@@ -89,4 +89,4 @@ python manage.py runserver
 
 ![Alt Text](https://s2.ezgif.com/tmp/ezgif-2-54d2753c6d.gif)
 ![Alt Text](https://s3.ezgif.com/tmp/ezgif-3-72b0edb7db.gif)
-![Alt Text](https://s2.ezgif.com/tmp/ezgif-2-ed05d00fa4.gif)
+![Alt Text](https://s2.ezgif.com/tmp/ezgif-2-3e7f2b4a9a.gif)
