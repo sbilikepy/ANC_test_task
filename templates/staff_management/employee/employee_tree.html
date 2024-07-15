@@ -5,7 +5,6 @@
   
   <div class="container-fluid custom-container">
     <div class="flex-row">
-      {#7#}
       <div class="level-container" id="level-7">
         {% for employee in employees|get_by_level:7 %}
           <div class="card" id="employee-{{ employee.id }}">
@@ -14,9 +13,13 @@
               <h6 class="card-subtitle mb-2 text-muted">{{ employee.position.name }}</h6>
               <p class="card-text">
                 Level: {{ employee.position.hierarchy_level }}</p>
-              <a href="#" class="card-link" data-id="{{ employee.id }}"
-                 onclick="loadSubordinates({{ employee.id }}, 7)">Load
-                subordinates</a>
+              <p class="card-text">📋 <a
+                  href="{% url 'staff_management:employee-detail' pk=employee.id %}"
+                  target="_blank">Get info</a></p>
+              <button class="btn btn-primary" data-id="{{ employee.id }}"
+                      onclick="loadSubordinates({{ employee.id }}, 7)">Load
+                subordinates
+              </button>
             </div>
           </div>
         {% endfor %}
