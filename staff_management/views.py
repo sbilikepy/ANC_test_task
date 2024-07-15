@@ -52,19 +52,19 @@ class EmployeeTreeView(generic.View):
         )
 
 
-def load_subordinates(request):
-    employee_id = request.GET.get('employee_id')
+def load_subordinates(request: HttpRequest) -> JsonResponse:
+    employee_id = request.GET.get("employee_id")
 
     try:
         employee = Employee.objects.get(id=employee_id)
     except Employee.DoesNotExist:
-        return JsonResponse({'error': 'Employee not found'}, status=404)
+        return JsonResponse({"error": "Employee not found"}, status=404)
 
-    subordinates = Employee.objects.filter(
-        supervisor=employee.id
-    ).values('id', 'full_name', 'position', 'position__name')
+    subordinates = Employee.objects.filter(supervisor=employee.id).values(
+        "id", "full_name", "position", "position__name"
+    )
 
-    return JsonResponse({'subordinates': list(subordinates)})
+    return JsonResponse({"subordinates": list(subordinates)})
 
 
 class EmployeeListView(generic.ListView):
