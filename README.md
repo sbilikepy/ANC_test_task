@@ -87,6 +87,7 @@ python seed_db_supervisor.py
 python manage.py runserver 
 `
 
-![Alt Text](https://s2.ezgif.com/tmp/ezgif-2-54d2753c6d.gif)
-![Alt Text](https://s3.ezgif.com/tmp/ezgif-3-72b0edb7db.gif)
-![Alt Text](https://s2.ezgif.com/tmp/ezgif-2-ed05d00fa4.gif)
+
+![HIERARCHY](https://cdn.discordapp.com/attachments/1256639106402877504/1262260822344728606/hierarchy.gif?ex=6695f37f&is=6694a1ff&hm=fc9e1afd2d19332a02ef1a68e64290c11818e83d1e94032d61a8fe95bff46e68&)
+![TABLE](https://cdn.discordapp.com/attachments/1256639106402877504/1262260822818951190/table.gif?ex=6695f37f&is=6694a1ff&hm=2da2a85d52d6b98ca45b5e444a6db9912b0096821a500e313d96bac5c86b9c1b&)
+![CRUD](https://cdn.discordapp.com/attachments/1256639106402877504/1262260823422664776/CRUD.gif?ex=6695f37f&is=6694a1ff&hm=43b3cfd6875bdab5bf002c16c279293b152e1a8adb491f286d9acbf0deec4a52&)
