@@ -36,5 +36,84 @@
     {% endfor %}
     </tbody>
   </table>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  
+  <script type="text/javascript">
+      var currentSortDirection = 'asc';
+
+      function updateEmployeeList() {
+          var url = "{% url 'staff_management:load-employees-for-list-view' %}";
+
+          $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                  sort: $('#employee-table th a.active').data('sort'),
+                  direction: currentSortDirection,
+                  search: $('#id_name').val()
+              },
+              dataType: 'json',
+              success: function (data) {
+                  var employeeTable = $('#employee-table-body');
+                  employeeTable.empty();
+
+
+                  $.each(data.employees.slice(0, 15), function (index, employee) {
+                      var row = '<tr>' +
+                          '<td><a href="/employees/' + employee.id + '/">' + employee.full_name + '</a></td>' +
+                          '<td>' + employee.position__name + '</td>' +
+                          '<td>' + employee.hired + '</td>' +
+                          '<td>' + employee.email + '</td>' +
+                          '</tr>';
+                      employeeTable.append(row);
+                  });
+              },
+              error: function (xhr, status, error) {
+                  console.error('AJAX Error:', status, error);
+              }
+          });
+      }
+
+      $(document).ready(function () {
+
+
+          $('#employee-search-form').submit(function (event) {
+              event.preventDefault();
+              updateEmployeeList();
+          });
+
+
+          $('#employee-table th a').click(function (event) {
+              event.preventDefault();
+              $('#a').removeClass('active asc desc');
+              var sort = $(this).data('sort');
+
+
+              if ($(this).hasClass('active')) {
+                  console.log('Function called here');
+
+                  currentSortDirection = (currentSortDirection === 'asc') ? 'desc' : 'asc';
+                  $(this).toggleClass('asc desc');
+              } else {
+
+                  currentSortDirection = 'asc';
+                  $(this).addClass('active asc');
+              }
+
+              updateEmployeeList();
+          });
+
+
+          $('#id_name').on('keyup', function () {
+              updateEmployeeList();
+          });
+
+
+          updateEmployeeList();
+      });
+  </script>
+
+
 
 {% endblock %}
