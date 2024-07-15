@@ -37,8 +37,11 @@ This project includes the implementation of a web application that displays an e
 
 
 
-`
+```
 git clone https://github.com/sbilikepy/ANC_test_task.git
+```
+`
+cd ANC_test_task
 `
 1. If you are using PyCharm - it may propose you to automatically create venv for your project 
     and install requirements in it, but if not:
@@ -47,13 +50,10 @@ git clone https://github.com/sbilikepy/ANC_test_task.git
     venv\Scripts\activate (on Windows)
     source venv/bin/activate (on macOS)
     ```
-`
-cd dir
-`
-
-`
+   
+```
 python.exe -m pip install --upgrade pip
-`
+```
 
 `
 pip install -r requirements.txt
