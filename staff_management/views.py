@@ -65,41 +65,88 @@ def load_subordinates(request):
     return JsonResponse({'subordinates': list(subordinates)})
 
 
-class EmployeeListView(LoginRequiredMixin, generic.ListView):
+class EmployeeListView(generic.ListView):
     model = Employee
     context_object_name = "employee_list"
     template_name = "staff_management/employee/employee_list.html"
-    paginate_by = 10
+    paginate_by = 5
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
-        # sort things
-        sort = self.request.GET.get('sort', 'position__hierarchy_level')
-        direction = self.request.GET.get('direction', 'asc')
-        if direction == 'desc':
-            sort = f'-{sort}'
-
-        # search things
-        search_form = EmployeeSearchForm(self.request.GET)
-        if search_form.is_valid():
-            search_query = search_form.cleaned_data.get('name')
-            if search_query:
-                queryset = queryset.filter(
-
-                    Q(full_name__icontains=search_query) |
-                    Q(first_name__icontains=search_query) |
-                    Q(last_name__icontains=search_query) |
-
-                    Q(email__icontains=search_query) |
-
-                    Q(position__name__icontains=search_query)
-
-                )
-
-        return queryset.order_by(sort)
-
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
-        context['search_form'] = EmployeeSearchForm(self.request.GET)
+        context["search_form"] = EmployeeSearchForm(self.request.GET)
+        context["sort"] = self.request.GET.get("sort",
+                                               "position__hierarchy_level")
+        context["direction"] = self.request.GET.get("direction", "asc")
         return context
+
+
+@csrf_exempt
+def load_employees_for_list_view(request: HttpRequest) -> JsonResponse:
+    print("CALL")
+    sort = request.GET.get("sort", "position__hierarchy_level")
+    direction = request.GET.get("direction", "asc")
+
+    if direction == "desc":
+        sort = f"-{sort}"
+
+    search_query = request.GET.get("search", "")
+    queryset = Employee.objects.all()
+    print(search_query)
+    print()
+    if search_query:
+        queryset = queryset.filter(
+            Q(full_name__icontains=search_query)
+            | Q(first_name__icontains=search_query)
+            | Q(last_name__icontains=search_query)
+            | Q(email__icontains=search_query)
+            | Q(position__name__icontains=search_query)
+            | Q(hired__icontains=search_query)
+            | Q(hired__icontains=search_query.replace(".", "-"))
+            | Q(hired__icontains=search_query.replace("/", "-"))
+        )
+
+    queryset = queryset.order_by(sort)
+
+    employees = list(
+        queryset.values("id", "full_name", "position__name", "hired", "email")
+    )
+
+    data = {"employees": employees}
+
+    return JsonResponse(data)
+
+
+class EmployeeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Employee
+    template_name = "staff_management/employee/employee_form.html"
+    form_class = EmployeeForm
+
+    def get_success_url(self) -> str:
+        return reverse(
+            "staff_management:employee-detail",
+            kwargs={"pk": self.object.pk}
+        )
+
+
+class EmployeeDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Employee
+    template_name = "staff_management/employee/employee_detail.html"
+
+
+class EmployeeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Employee
+    template_name = "staff_management/employee/employee_form.html"
+    form_class = EmployeeForm
+
+
+class EmployeeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Employee
+    template_name = "staff_management/employee/employee_confirm_delete.html"
+    success_url = reverse_lazy("staff_management:employee-list")
+
+
+def crud_info(request: HttpRequest) -> HttpResponse:
+    return render(
+        request,
+        template_name="staff_management/employee/crud_info.html"
+    )
