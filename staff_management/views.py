@@ -1,12 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views import generic
-from django.http import JsonResponse
-
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.views import View
-
-from .forms import EmployeeSearchForm
+from .forms import EmployeeSearchForm, EmployeeForm
+from django.views import generic
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.csrf import csrf_exempt
 from .models import Employee
 
 
