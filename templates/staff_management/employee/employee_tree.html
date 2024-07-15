@@ -38,6 +38,10 @@
   <script>
       function loadSubordinates(employeeId, currentLevel) {
           console.log('Loading subordinates for employee ID:', employeeId);
+          
+          for (var level = currentLevel - 1; level >= 1; level--) {
+              $('#level-' + level).empty();
+          }
 
           $.ajax({
               url: '{% url "staff_management:load-subordinates" %}',
