@@ -3,35 +3,35 @@
 {% load static %}
 {% block content %}
   
-  <form action="" method="get" class="form-inline mb-3">
+  <form id="employee-search-form" method="get" class="form-inline mb-3">
     {{ search_form|crispy }}
     <input class="btn btn-secondary" type="submit" value="🔎">
   </form>
   
-  <table class="table table-bordered">
+  <table id="employee-table" class="table table-bordered">
     <thead>
     <tr>
-      <th scope="col"><a
-          href="?sort=full_name&direction={% if request.GET.sort == 'full_name' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Full
-        Name</a></th>
-      <th scope="col"><a
-          href="?sort=position__hierarchy_level&direction={% if request.GET.sort == 'position__hierarchy_level' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Position</a>
+      <th scope="col"><a href="#" data-sort="full_name">Full Name</a></th>
+      <th scope="col"><a href="#" data-sort="position__hierarchy_level">Position</a>
       </th>
-      <th scope="col"><a
-          href="?sort=hired&direction={% if request.GET.sort == 'hired' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Hired</a>
-      </th>
-      <th scope="col"><a
-          href="?sort=email&direction={% if request.GET.sort == 'email' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Email</a>
-      </th>
+      <th scope="col"><a href="#" data-sort="hired">Hired</a></th>
+      <th scope="col"><a href="#" data-sort="email">Email</a></th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="employee-table-body">
     {% for employee in employee_list %}
       <tr>
-        <td>{{ employee.full_name }}</td>
+        <td><a
+            href="{% url 'staff_management:employee-detail' pk=employee.id %}">
+          {{ employee.full_name }}</a>
+        </td>
         <td>{{ employee.position.name }}</td>
         <td>{{ employee.hired }}</td>
         <td>{{ employee.email }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4">No employees found.</td>
       </tr>
     {% endfor %}
     </tbody>
