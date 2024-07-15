@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header">
+          <h3>{{ employee.full_name }}
+            <a href="{% url 'staff_management:employee-update' pk=employee.id %}"
+              class="btn btn-sm btn-outline-primary ml-2" title="Edit"
+              style="font-size: 0.7em;">
+              ✏️
+            </a>
+          </h3>
+        </div>
+        <div class="card-body">
+          <p><strong>Position:</strong> {{ employee.position.name }}</p>
+          <p><strong>Hierarchy level:</strong> {{ employee.position.hierarchy_level }}</p>
+          <p><strong>Hired:</strong> {{ employee.hired }}</p>
+          <p><strong>Email:</strong> {{ employee.email }}</p>
+          <p><strong>Supervisor:</strong>
+            {% if employee.supervisor.id %}
+            <a href="{% url 'staff_management:employee-detail' pk=employee.supervisor.id %}">
+              {{ employee.supervisor.full_name }}
+            </a>
+            {% else %}
+            Employee has no supervisor yet
+            {% endif %}
+          </p>
+          <hr>
+          <div class="text-left">
+            <a href="{% url 'staff_management:employee-delete' pk=employee.id %}"
+              class="btn btn-danger" data-toggle="modal"
+              data-target="#confirmDeleteModal">
+              Delete Employee
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
