@@ -54,7 +54,12 @@ class Employee(AbstractUser):
     def __str__(self):
         return self.full_name if self.full_name else "Unnamed Employee"
 
-    def clean(self):
+    def get_absolute_url(self):
+        return reverse("staff_management:employee-detail",
+                       kwargs={"pk": self.pk})
+
+    def clean(self) -> None:
+        print("CLEAN CALL")
         if not self.full_name:
             self.full_name = f"{self.first_name} {self.last_name}"
 
