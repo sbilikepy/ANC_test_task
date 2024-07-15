@@ -1,3 +1,15 @@
+body {
+
+}
+
+.container {
+    max-width: 1350px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .custom-container {
     overflow-x: auto;
 }
@@ -11,8 +23,86 @@
 .level-container {
     padding: 10px;
     margin-bottom: 10px;
-    max-height: 500px;
+    max-height: 860px;
     overflow-y: auto;
     flex: 0 0 14.28%; /* 100% / 7 */
     min-width: 14.28%;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+.level-container .btn.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.3s;
+    transform: scale(1);
+    float: left;
+}
+
+.level-container .btn.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.card.active {
+    border: 2px solid blue;
+    border-radius: 8px;
+    background-color: #f0f8ff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    text-align: center;
+}
+
+.table th,
+.table td {
+    width: 25%;
+}
+
+.nav-tabs {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.nav-item {
+    margin-right: 5px;
+}
+
+.nav-link {
+    color: #007bff;
+}
+
+.nav-link:hover {
+    color: #0056b3;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+.level-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.level-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.level-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.level-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

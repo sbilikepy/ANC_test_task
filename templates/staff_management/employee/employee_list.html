@@ -2,40 +2,118 @@
 {% load crispy_forms_filters %}
 {% load static %}
 {% block content %}
-
-  <form action="" method="get" class="form-inline mb-3">
+  
+  <form id="employee-search-form" method="get" class="form-inline mb-3">
     {{ search_form|crispy }}
     <input class="btn btn-secondary" type="submit" value="🔎">
   </form>
-
-  <table class="table table-striped">
+  
+  <table id="employee-table" class="table table-bordered">
     <thead>
     <tr>
-      <th scope="col"><a
-          href="?sort=full_name&direction={% if request.GET.sort == 'full_name' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Full
-        Name</a></th>
-      <th scope="col"><a
-          href="?sort=position__hierarchy_level&direction={% if request.GET.sort == 'position__hierarchy_level' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Position</a>
+      <th scope="col"><a href="#" data-sort="full_name">Full Name</a></th>
+      <th scope="col"><a href="#" data-sort="position__hierarchy_level">Position</a>
       </th>
-      <th scope="col"><a
-          href="?sort=hired&direction={% if request.GET.sort == 'hired' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Hired</a>
-      </th>
-      <th scope="col"><a
-          href="?sort=email&direction={% if request.GET.sort == 'email' and request.GET.direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Email</a>
-      </th>
+      <th scope="col"><a href="#" data-sort="hired">Hired</a></th>
+      <th scope="col"><a href="#" data-sort="email">Email</a></th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="employee-table-body">
     {% for employee in employee_list %}
       <tr>
-        <td>{{ employee.full_name }}</td>
+        <td><a
+            href="{% url 'staff_management:employee-detail' pk=employee.id %}">
+          {{ employee.full_name }}</a>
+        </td>
         <td>{{ employee.position.name }}</td>
         <td>{{ employee.hired }}</td>
         <td>{{ employee.email }}</td>
       </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4">No employees found.</td>
+      </tr>
     {% endfor %}
     </tbody>
   </table>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  
+  <script type="text/javascript">
+      var currentSortDirection = 'asc';
+
+      function updateEmployeeList() {
+          var url = "{% url 'staff_management:load-employees-for-list-view' %}";
+
+          $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                  sort: $('#employee-table th a.active').data('sort'),
+                  direction: currentSortDirection,
+                  search: $('#id_name').val()
+              },
+              dataType: 'json',
+              success: function (data) {
+                  var employeeTable = $('#employee-table-body');
+                  employeeTable.empty();
+
+
+                  $.each(data.employees.slice(0, 15), function (index, employee) {
+                      var row = '<tr>' +
+                          '<td><a href="/employees/' + employee.id + '/">' + employee.full_name + '</a></td>' +
+                          '<td>' + employee.position__name + '</td>' +
+                          '<td>' + employee.hired + '</td>' +
+                          '<td>' + employee.email + '</td>' +
+                          '</tr>';
+                      employeeTable.append(row);
+                  });
+              },
+              error: function (xhr, status, error) {
+                  console.error('AJAX Error:', status, error);
+              }
+          });
+      }
+
+      $(document).ready(function () {
+
+
+          $('#employee-search-form').submit(function (event) {
+              event.preventDefault();
+              updateEmployeeList();
+          });
+
+
+          $('#employee-table th a').click(function (event) {
+              event.preventDefault();
+              $('#a').removeClass('active asc desc');
+              var sort = $(this).data('sort');
+
+
+              if ($(this).hasClass('active')) {
+                  console.log('Function called here');
+
+                  currentSortDirection = (currentSortDirection === 'asc') ? 'desc' : 'asc';
+                  $(this).toggleClass('asc desc');
+              } else {
+
+                  currentSortDirection = 'asc';
+                  $(this).addClass('active asc');
+              }
+
+              updateEmployeeList();
+          });
+
+
+          $('#id_name').on('keyup', function () {
+              updateEmployeeList();
+          });
+
+
+          updateEmployeeList();
+      });
+  </script>
+
 
 
 {% endblock %}
