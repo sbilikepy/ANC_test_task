@@ -79,24 +79,27 @@ class Employee(AbstractUser):
             except Employee.DoesNotExist:
                 pass
             else:
-                if (
-                        old_instance.position.hierarchy_level
-                        != self.position.hierarchy_level
-                ):
-                    print(
-                        f"Hierarchy level changed for {self.full_name}. "
-                        f"Reassigning subordinates."
-                    )
-                    self.reassign_subordinates("update")
-                    new_supervisor = (
-                        Employee.objects.filter(
-                            position__hierarchy_level=self.position.hierarchy_level + 1
+                try:
+                    if (
+                            old_instance.position.hierarchy_level
+                            != self.position.hierarchy_level
+                    ):
+                        print(
+                            f"Hierarchy level changed for {self.full_name}. "
+                            f"Reassigning subordinates."
                         )
-                        .annotate(num_subordinates=Count("subordinates"))
-                        .order_by("num_subordinates")
-                        .first()
-                    )
-                    self.supervisor = new_supervisor
+                        self.reassign_subordinates("update")
+                        new_supervisor = (
+                            Employee.objects.filter(
+                                position__hierarchy_level=self.position.hierarchy_level + 1
+                            )
+                            .annotate(num_subordinates=Count("subordinates"))
+                            .order_by("num_subordinates")
+                            .first()
+                        )
+                        self.supervisor = new_supervisor
+                except Exception as er:
+                    print(er)
 
         self.username = self.email
         super(Employee, self).save(*args, **kwargs)
