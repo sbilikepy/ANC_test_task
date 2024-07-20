@@ -7,8 +7,7 @@ class EmployeeSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search for an employee"}),
+        widget=forms.TextInput(attrs={"placeholder": "Search for an employee"}),
     )
 
 
@@ -18,12 +17,10 @@ class EmployeeForm(forms.ModelForm):
         fields = ["full_name", "position", "hired", "email", "supervisor"]
         widgets = {
             "full_name": forms.TextInput(
-                attrs={"class": "form-control",
-                       "placeholder": "Enter full name"}
+                attrs={"class": "form-control", "placeholder": "Enter full name"}
             ),
             "position": forms.Select(
-                attrs={"class": "form-control",
-                       "placeholder": "Select position"}
+                attrs={"class": "form-control", "placeholder": "Select position"}
             ),
             "hired": forms.DateInput(
                 attrs={
@@ -33,17 +30,23 @@ class EmployeeForm(forms.ModelForm):
                 }
             ),
             "email": forms.EmailInput(
-                attrs={"class": "form-control",
-                       "placeholder": "example@somemail.com"}
+                attrs={"class": "form-control", "placeholder": "example@somemail.com"}
             ),
-            "supervisor": forms.Select(
-                attrs={"class": "form-control",
-                       "placeholder": "Select supervisor"}
+            "supervisor": forms.NumberInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Enter new supervisor ID",
+                }
             ),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["position"].queryset = Position.objects.all()
-        self.fields["supervisor"].queryset = Employee.objects.order_by(
-            "full_name")
+
+    def clean_supervisor(self):
+        supervisor = self.cleaned_data["supervisor"]
+
+        if not Employee.objects.filter(id=supervisor.id).exists():
+            raise forms.ValidationError("Supervisor with this ID does not exist.")
+        return supervisor
