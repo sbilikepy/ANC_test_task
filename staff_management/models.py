@@ -137,9 +137,30 @@ class Employee(AbstractUser):
         else:
             self.subordinates.update(supervisor=None)
             print(
-                f"No suitable supervisor found for {self.full_name}."
-                f" Subordinates set to None."
+                f"No suitable supervisor found for subordinates "
+                f"of {self.full_name}. Subordinates set to None."
             )
+
+        for subordinate in self.subordinates.all():
+            subordinate.reassign_subordinates(old_position_level)
+
+    @staticmethod
+    def _find_supervisor_by_hierarchy(
+            hierarchy_level: int, id_to_exclude: Optional[int] = None
+    ) -> Optional["Employee"]:
+        print(hierarchy_level, id_to_exclude)
+
+        supervisors = Employee.objects.filter(
+            position__hierarchy_level=hierarchy_level)
+
+        if id_to_exclude is not None:
+            supervisors = supervisors.exclude(id=id_to_exclude)
+
+        return (
+            supervisors.annotate(num_subordinates=Count("subordinates"))
+            .order_by("num_subordinates")
+            .first()
+        )
 
     @staticmethod
     def email_validator(email: str) -> bool:
