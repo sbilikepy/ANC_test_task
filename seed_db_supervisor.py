@@ -42,12 +42,15 @@ def assign_supervisors() -> None:
     print("Relations created")
     unassigned: bool = True
     while unassigned:
-        for level in range(7, 2, -1):
+        for level in range(7, 1, -1):
             unassigned_counter = 0
             supervisors_without_subordinates = Employee.objects.annotate(
                 num_subordinates=Count("subordinates")
             ).filter(position__hierarchy_level=level, num_subordinates=0)
-            print(level, len(supervisors_without_subordinates))
+            print(
+                f"Level {level} | {supervisors_without_subordinates.count()} "
+                f"are "
+                f"being processed")
             unassigned_counter += len(supervisors_without_subordinates)
 
             lower_level_employees = (

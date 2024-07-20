@@ -15,20 +15,13 @@ def index(request: HttpRequest) -> HttpResponse:
         template_name="staff_management/index.html",
         context={
             "db_size": Employee.objects.count(),
-            "lvl_7": Employee.objects.filter(
-                position__hierarchy_level=7).count(),
-            "lvl_6": Employee.objects.filter(
-                position__hierarchy_level=6).count(),
-            "lvl_5": Employee.objects.filter(
-                position__hierarchy_level=5).count(),
-            "lvl_4": Employee.objects.filter(
-                position__hierarchy_level=4).count(),
-            "lvl_3": Employee.objects.filter(
-                position__hierarchy_level=3).count(),
-            "lvl_2": Employee.objects.filter(
-                position__hierarchy_level=2).count(),
-            "lvl_1": Employee.objects.filter(
-                position__hierarchy_level=1).count(),
+            "lvl_7": Employee.objects.filter(position__hierarchy_level=7).count(),
+            "lvl_6": Employee.objects.filter(position__hierarchy_level=6).count(),
+            "lvl_5": Employee.objects.filter(position__hierarchy_level=5).count(),
+            "lvl_4": Employee.objects.filter(position__hierarchy_level=4).count(),
+            "lvl_3": Employee.objects.filter(position__hierarchy_level=3).count(),
+            "lvl_2": Employee.objects.filter(position__hierarchy_level=2).count(),
+            "lvl_1": Employee.objects.filter(position__hierarchy_level=1).count(),
         },
     )
 
@@ -68,8 +61,10 @@ class EmployeeListView(generic.ListView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["search_form"] = EmployeeSearchForm(self.request.GET)
-        context["sort"] = self.request.GET.get("sort",
-                                               "position__hierarchy_level")
+        context["sort"] = self.request.GET.get(
+            "sort",
+            "position__hierarchy_level"
+        )
         context["direction"] = self.request.GET.get("direction", "asc")
         return context
 
@@ -117,8 +112,7 @@ class EmployeeCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self) -> str:
         return reverse(
-            "staff_management:employee-detail",
-            kwargs={"pk": self.object.pk}
+            "staff_management:employee-detail", kwargs={"pk": self.object.pk}
         )
 
 

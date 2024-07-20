@@ -14,13 +14,15 @@ from staff_management.models import Employee, Position
 
 def seed_users(amount: int) -> None:
     seeder = Seed.seeder()
+    amount -= Employee.objects.count()
 
     seeder.add_entity(
         Employee,
         amount,
         {
             "email": lambda x: unique_email(seeder),
-            "full_name": lambda x: f"{seeder.faker.first_name()} {seeder.faker.last_name()}",
+            "full_name": lambda
+                x: f"{seeder.faker.first_name()} {seeder.faker.last_name()}",
             "hired": lambda x: seeder.faker.date_this_decade(
                 before_today=True, after_today=False
             ),
@@ -58,4 +60,5 @@ def unique_username(seeder: Seeder) -> str:
 
 
 if __name__ == "__main__":
-    seed_users(50_000)
+    seed_users(
+        50_005)  # set the end goal amount even if the script was run before
