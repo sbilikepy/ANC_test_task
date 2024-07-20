@@ -34,5 +34,9 @@ urlpatterns = [
         EmployeeDetailView.as_view(),
         name="employee-detail"
     ),
-    path("employees/crud-info/", crud_info, name="employee-crud-info"),
+    path(
+        "employees/crud-info/",
+        crud_info,
+        name="employee-crud-info"
+    ),
 ]
